@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8>
+    <title>Screen Stream</title>
+    <style>
+      html, body, div {
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      body {
+        width: 100vw;
+        height: 100vh;
+      }
+
+      #stream_img {
+        position: absolute; top:0; left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  	<script>
+  		/* client socket */
+  		var socket = io.connect();
+
+  		function send_message(message) {
+  			socket.emit('send message', message);
+  		}
+
+      send_message('Window Resized ' + 'width: ' + window.innerWidth * window.devicePixelRatio + ' height: ' + window.innerHeight * window.devicePixelRatio);
+
+  		/* mouse tracking */
+  		var drag_flag = 0;
+
+  		document.onmousemove = function (e) {
+  			if(drag_flag == 1) {	// mouse dragging
+  				console.log("mouse dragging\n");
+  		    //console.log(e.clientX + '        ' + e.clientY);
+  				send_message('Mouse Dragging ' + 'x: ' + e.clientX * window.devicePixelRatio + ' y: ' + e.clientY * window.devicePixelRatio); }
+  			else {	// mouse moving
+  				send_message('Simple Mouse Move ' + 'x: ' + e.clientX * window.devicePixelRatio + ' y: ' + e.clientY * window.devicePixelRatio);
+  			}
+  		}
+
+  		document.onmousedown = function (e) {
+  			drag_flag = 1;
+
+  			console.log("mouse clicked\n");
+
+  			send_message('Mouse Clicked ' + 'x: ' + e.clientX * window.devicePixelRatio + ' y: ' + e.clientY * window.devicePixelRatio);
+  		}
+
+  		document.onmouseup = function(e) {
+  			drag_flag = 0;
+        send_message('Mouse Up');
+  		}
+
+  		document.onkeydown = function (e) {
+  				console.log(e.type + ' ' + e.keyCode
+  					+ ' ' + String.fromCharCode(e.keyCode));
+
+  				send_message(e.type + ' ' + e.keyCode + ' ' + String.fromCharCode(e.keyCode));
+  		}
+
+  		document.onkeyup = function (e) {
+  				console.log(e.type + ' ' + e.keyCode
+  					+ ' ' + String.fromCharCode(e.keyCode));
+
+  				send_message(e.type + ' ' + e.keyCode + ' ' + String.fromCharCode(e.keyCode));
+  		}
+
+  		window.onresize = function(e) {
+  	     console.log('width : ' + window.innerWidth + 'height : ' + window.innerHeight);
+
+  	     send_message('Window Resized ' + 'width: ' + window.innerWidth * window.devicePixelRatio + ' height: ' + window.innerHeight * window.devicePixelRatio);
+  	  }
+
+      window.onload = function(e) {
+        var img_content = document.getElementById('stream_img');
+        var img_height = img_content.contentHeight;
+        var img_width = img_content.contentWidth;
+
+      }
+
+  	</script>
+</head>
+<body>
+    <img src="http://192.168.1.246:8080/stream.mjpeg" id="stream_img" draggable="false" />
+</body>
+</html>

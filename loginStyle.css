@@ -1,0 +1,161 @@
+
+/*---------- reset ----------*/
+html, body, div {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+
+   font-family:sans-serif;
+
+  background-color: #fceb5d;
+}
+
+/*---------- style ----------*/
+.box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  padding: 40px;
+
+  width: 300px;
+  height: auto;
+
+  text-align: center;
+
+  background-color: #403631;
+
+  transition: 1s;
+  transform: translate(-50%, -50%);
+}
+.box h1 {
+  color: white;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.box input {
+  display: block;
+
+  margin: 20px auto;
+
+  border-radius: 24px;
+
+  text-align: center;
+  color: white;
+
+  outline: none;
+  background: none;
+
+  transition: 0.25s;
+}
+.box #user_id, .box #user_pw {
+  border: 2px solid #3498db;
+  padding: 14px 10px;
+
+  width: 200px;
+  height: auto;
+}
+.box #login_btn {
+  border: 2px solid #2ecc71;
+  padding: 14px 40px;
+}
+.box input:not(#login_btn):focus, input:not(#login_btn):hover {
+  width: 280px;
+  border-color: #2ecc71;
+}
+.box input#login_btn:focus, .box input#login_btn:hover {
+  background-color: #2ecc71;
+}
+
+/*-------------- background ------------*/
+#background {
+  display: block;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  height: 366px;
+  width: 380px;
+
+  text-align: center;
+
+  opacity: 0;
+  background-color: #403631;
+
+  transition: 1s;
+  transform: translate(-50%, -50%);
+}
+#background_content {
+  position: absolute;
+  top: 400px;
+  left: 50%;
+
+  color: white;
+  font-weight: 45px;
+  text-align: center;
+  text-transform: uppercase;
+
+  transform: translate(-50%, -50%);
+}
+
+@keyframes background_animation {
+  0% {
+    height: 366px;
+    width: 380px;
+  }
+  100% {
+    height: 100vh;
+    width: 100vw;
+  }
+}
+
+/* loading ring */
+.lds-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  display: none;
+  position: relative;
+  width: 64px;
+  height: 64px;
+
+  transform: translate(-50%, -50%);
+ }
+ .lds-ring div {
+   box-sizing: border-box;
+   display: block;
+   position: absolute;
+   width: 51px;
+   height: 51px;
+   margin: 6px;
+   border: 6px solid #fff;
+   border-radius: 50%;
+   border-color: #fff transparent transparent transparent;
+
+   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+ }
+ .lds-ring div:nth-child(1) {
+   animation-delay: -0.45s;
+ }
+ .lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+ }
+ .lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+ }
+
+ @keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+ }

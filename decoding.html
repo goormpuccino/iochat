@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr">
+<head>
+	<meta charset="utf=8"/>
+  <title>Decoding</title>
+
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+	<h1>Mouse Movement</h1>
+	<h2 id="x_result">0</h2>
+	<h2 id="y_result">0</h2>
+	<h2 id="mytext"></h2>
+	<p id="echo">hello</p>
+	<form id="messageForm">
+		<div class="form-group">
+			<label>Enter Message</label>
+			<textarea class="form-control" id="message"></textarea>
+			<br/>
+			<input type="submit" class="btn btn-primary" value="Send Message" />
+		</div>
+	</form>
+
+	<!--
+	video id="video" src="http://127.0.0.1:1337" autoplay="autoplay"	width="704" height="480"></video>
+-->
+
+	<script>
+		/* client socket */
+		var socket = io.connect();
+
+		function send_message(message) {
+			socket.emit('send message', message);
+		}
+
+		/* mouse tracking */
+		var drag_flag = 0;
+
+		document.onmousemove = function (e) {
+			var result_x = document.getElementById('x_result');
+			var result_y = document.getElementById('y_result');
+			result_x.innerHTML = e.clientX;
+			result_y.innerHTML = e.clientY;
+
+			if(drag_flag == 1) {	// mouse dragging
+				console.log("mouse dragging\n");
+		    //console.log(e.clientX + '        ' + e.clientY);
+				send_message('Mouse Dragging\n' + 'x:' + e.clientX + ' y: ' + e.clientY);
+			}
+			else {	// mouse moving
+				send_message('Simple Mouse Move\n' + 'x:' + e.clientX + ' y: ' + e.clientY);
+			}
+		}
+
+		document.onmousedown = function (e) {
+			drag_flag = 1;
+
+			var result_X = e.clientX;
+			var result_Y = e.clientY;
+
+			console.log("mouse clicked\n");
+	    //console.log(result_X + '        ' + result_Y);
+
+			send_message('Mouse Clicked\n' + 'x:' + e.clientX + ' y: ' + e.clientY);
+		}
+
+		document.onmouseup = function(e) {
+			drag_flag = 0;
+		}
+
+		document.onkeydown = function (e) {
+				var txt = document.getElementById("mytext");
+
+				 txt.addEventListener("keydown", e, false);
+				 txt.addEventListener("keypress", e, false);
+				 txt.addEventListener("keyup", e, false);
+				 console.log(e.type + ' ' + e.keyCode
+					+ ' ' + String.fromCharCode(e.keyCode));
+
+				send_message('Key Pressed\n' + e.type + ' ' + e.keyCode + ' ' + String.fromCharCode(e.keyCode));
+		}
+
+		window.onresize = function(e) {
+	     console.log('width : ' + window.innerWidth + 'height : ' + window.innerHeight);
+
+	     send_message('Window Resized\n' + 'width: ' + window.innerWidth + ' height: ' + window.innerHeight);
+	  }
+
+	//window.onload = function() {}
+  $(function(){
+		var $messageForm=$('#messageForm');
+    var $message = $('#message');
+
+		$messageForm.submit(function(e){
+      e.preventDefault();
+			send_message($message.val());
+      $message.val('');
+    });
+  });
+
+	$(function() {
+			socket.on('new message', function(data) {
+				var echo_button = document.getElementById("echo");
+				echo_button.innerHTML = data;
+				console.log(data);
+			});
+	})
+
+	</script>
+
+</body>
+</head>

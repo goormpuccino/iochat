@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8>
+    <title>Screen Stream</title>
+    <style>
+      html, body, div {
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      body {
+        width: 100vw;
+        height: 100vh;
+
+        background: tomato;
+      }
+
+    </style>
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  	<script>
+
+  		document.onkeydown = function (e) {
+  				console.log(e.type + ' ' + e.keyCode
+  					+ ' ' + String.fromCharCode(e.keyCode));
+  		}
+
+  		document.onkeyup = function (e) {
+  				console.log(e.type + ' ' + e.keyCode
+  					+ ' ' + String.fromCharCode(e.keyCode));
+  		}
+
+  	</script>
+</head>
+<body>
+
+</body>
+</html>
